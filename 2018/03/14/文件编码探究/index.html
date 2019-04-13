@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="编码,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="介绍了如何去确定一个文本文件所使用的编码，特别地以记事本保存“联通”为例进行了深入分析。">
+<meta name="keywords" content="编码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件编码探究">
+<meta property="og:url" content="http://chon.wang/2018/03/14/文件编码探究/index.html">
+<meta property="og:site_name" content="LLLon">
+<meta property="og:description" content="介绍了如何去确定一个文本文件所使用的编码，特别地以记事本保存“联通”为例进行了深入分析。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://static.oschina.net/uploads/img/201505/11194651_KHfQ.png">
+<meta property="og:image" content="http://static.oschina.net/uploads/img/201505/11194651_54p8.png">
+<meta property="og:image" content="http://static.oschina.net/uploads/img/201505/11194652_2a96.png">
+<meta property="og:image" content="http://static.oschina.net/uploads/img/201505/11194653_aCvv.png">
+<meta property="og:image" content="http://static.oschina.net/uploads/img/201505/11194653_P5wh.png">
+<meta property="og:image" content="http://static.oschina.net/uploads/img/201505/11194654_6cQX.png">
+<meta property="og:image" content="http://static.oschina.net/uploads/img/201505/11194654_EN3a.png">
+<meta property="og:image" content="http://static.oschina.net/uploads/img/201505/11194654_JqZz.png">
+<meta property="og:image" content="http://static.oschina.net/uploads/img/201505/11194654_SPb3.png">
+<meta property="og:image" content="http://static.oschina.net/uploads/img/201505/11194654_Kvmf.png">
+<meta property="og:image" content="http://static.oschina.net/uploads/img/201505/11194654_c0E6.png">
+<meta property="og:image" content="http://static.oschina.net/uploads/img/201505/11194655_wDfJ.png">
+<meta property="og:image" content="http://static.oschina.net/uploads/img/201505/11194655_4hCv.png">
+<meta property="og:updated_time" content="2019-04-13T15:49:05.122Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="文件编码探究">
+<meta name="twitter:description" content="介绍了如何去确定一个文本文件所使用的编码，特别地以记事本保存“联通”为例进行了深入分析。">
+<meta name="twitter:image" content="http://static.oschina.net/uploads/img/201505/11194651_KHfQ.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chon.wang/2018/03/14/文件编码探究/">
+
+
+
+
+
+  <title>文件编码探究 | LLLon</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">LLLon</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chon.wang/2018/03/14/文件编码探究/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lon">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LLLon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">文件编码探究</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-14T00:00:00+08:00">
+                2018-03-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习/" itemprop="url" rel="index">
+                    <span itemprop="name">学习</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习/编码/" itemprop="url" rel="index">
+                    <span itemprop="name">编码</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>介绍了如何去确定一个文本文件所使用的编码，特别地以记事本保存“联通”为例进行了深入分析。</p>
+<a id="more"></a>
+<p>[TOC]</p>
+<h3 id="混乱的现状"><a href="#混乱的现状" class="headerlink" title="混乱的现状"></a>混乱的现状</h3><p>设想一下，如果在保存文本文件时，也同时把所使用的编码的信息也保存在文件内容里，那么，在再次读取时，确定所使用的编码就容易多了。</p>
+<blockquote>
+<p>很多的非文本文件比如图片文件通常会在文件的头部加上所谓的“magic number（魔法数字）”来作为一种标识。所谓的“magic number”，其实它就是一个或几个固定的字节构成的固定值，用于标识文件的种类（类似于签名）。比如bmp文件通常会以“42 4D”两字节开头。</p>
+<p>又比如Java的class文件，则是以四字节的“ca fe ba be”打头。（咖啡宝贝？）</p>
+<p><a href="http://static.oschina.net/uploads/img/201505/11194651_8DWe.png" target="_blank" rel="noopener"><img src="http://static.oschina.net/uploads/img/201505/11194651_KHfQ.png" alt="image"></a></p>
+<p>即便没有文件后缀名，根据这些信息也是确定一个文件类型的手段。</p>
+<p>附：关于用Notepad++查看十六进制的问题，这是一个插件，如果没有装，菜单–插件–plugin manager–available–HEX-Editor，装上它。装上后，它通常在工具栏的最右边，一个黑色的大写的斜体的“H”就是它。单击它可以在正常文本与16进制间切换。要进一步查看二进制，在文本区，右键–view in–to binary。</p>
+</blockquote>
+<h4 id="没有编码信息"><a href="#没有编码信息" class="headerlink" title="没有编码信息"></a>没有编码信息</h4><p>那么，对于文本文件，有没有这样的好事呢？可以简单建立一个文本文件“foo.txt”，里面输入两个简单的字符，比如“hi”，保存，然后再查看文件的大小属性</p>
+<p><a href="http://static.oschina.net/uploads/img/201505/11194651_VNky.png" target="_blank" rel="noopener"><img src="http://static.oschina.net/uploads/img/201505/11194651_54p8.png" alt="image"></a></p>
+<p>然后，我们很遗憾地发现，大小只有2，也即“hi”两个字符的大小，这意味着没有保存额外的所用编码的信息。</p>
+<p>用十六进制形式查看，也可以发现这两个字节就是hi两字符的编码：</p>
+<p><a href="http://static.oschina.net/uploads/img/201505/11194652_Agej.png" target="_blank" rel="noopener"><img src="http://static.oschina.net/uploads/img/201505/11194652_2a96.png" alt="image"></a></p>
+<blockquote>
+<p>关于字母的ASCII编码，可查看<a href="http://my.oschina.net/goldenshaw/blog/351949" target="_blank" rel="noopener">字符集与编码（八）——ASCII和ISO-8859-1</a>。</p>
+</blockquote>
+<p>那么，现在很清楚了，文本文件仅仅是内容的字节序列，没有其它额外的信息。</p>
+<h4 id="BOM？"><a href="#BOM？" class="headerlink" title="BOM？"></a>BOM？</h4><p>当然，说绝对没有额外信息也不完全正确，在之前的关于BOM的介绍中，我们看到BOM其实可以看成是一种额外的信息。</p>
+<blockquote>
+<p>参见<a href="http://my.oschina.net/goldenshaw/blog/323248" target="_blank" rel="noopener">字符集与编码（七）——BOM</a></p>
+</blockquote>
+<p>保持内容不变，简单地“另存为”一下，在编码一栏选择“UTF-8”，再次查看属性将会发现大小变成了5.</p>
+<p><a href="http://static.oschina.net/uploads/img/201505/11194653_tLsv.png" target="_blank" rel="noopener"><img src="http://static.oschina.net/uploads/img/201505/11194653_aCvv.png" alt="image"></a></p>
+<p>再次查看十六进制形式时，就会发现除了原来的“68 69”外，还多出了UTF-8的BOM：“ef bb bf”</p>
+<p><a href="http://static.oschina.net/uploads/img/201505/11194653_5tgp.png" target="_blank" rel="noopener"><img src="http://static.oschina.net/uploads/img/201505/11194653_P5wh.png" alt="image"></a></p>
+<p>也正是以上三个与内容无关的字节使得大小变成了5.</p>
+<p>这个信息是与所用编码有关的，不过它仅能确定与Unicode相关的编码。</p>
+<blockquote>
+<p>严格地说，BOM的目的是用于确定字节序的。</p>
+</blockquote>
+<p>另一方面，对于UTF-8而言，现在通常不建议使用BOM，因为UTF-8的字节序是固定的，所以很多的UTF-8编码的文本文件其实是没有BOM的，不能简单地认为没有BOM就不是UTF-8了。</p>
+<blockquote>
+<p>比如eclipse中生成的UTF-8文件默认就是不带BOM的。微软的笔记本应该是比较特殊的情况。</p>
+</blockquote>
+<p>综上所述，文本文件通常没有一个特殊的头部信息来供确定所用的编码，另一方面，编码的种类又是五花八门，那么如何去确定编码呢？</p>
+<h3 id="确定编码的步骤"><a href="#确定编码的步骤" class="headerlink" title="确定编码的步骤"></a>确定编码的步骤</h3><p>不妨就以记事本为考察对象，去探究一下它是如何确定编码的。</p>
+<h4 id="利用BOM"><a href="#利用BOM" class="headerlink" title="利用BOM"></a>利用BOM</h4><p>前面说了，BOM作为一种额外的信息，间接地表明了所使用的编码。尽管它原本的意图是要指明字节序，但曲线救国一下也未必不可。况且记事本还主动地为UTF-8也写入了BOM，不加以利用这一信息自然是不明智的。</p>
+<blockquote>
+<p>注：对UTF-16来说，BOM是必须的，因为它是存在字节序的，弄反了字节序一个编码就会变成另一个编码了，那就彻底乱套了。不过一般很少用UTF-16编码来保存文件的，更多是在内存中使用它作为一种统一的编码。</p>
+</blockquote>
+<p>但对于UTF-8，很多时候也是没有BOM的，记事本遇到UTF-8 without BOM时又该怎么办呢？</p>
+<h4 id="我猜，我猜，我猜猜猜"><a href="#我猜，我猜，我猜猜猜" class="headerlink" title="我猜，我猜，我猜猜猜"></a>我猜，我猜，我猜猜猜</h4><p>如果内容中没有编码信息，又要去确定它使用的编码，这不是为难人是什么？好在“坑蒙拐骗”中的第二招“蒙”可以拿来用用。</p>
+<blockquote>
+<p>“蒙”其实也是要讲点技术含量的，简单点自然就是是模式匹配了，或许一个或几个正则式就完了；复杂点，什么概率论，统计学，大数据统统给它弄上去，那逼格立马就高了有木有？当然了，记事本也就是一跑龙套的…</p>
+</blockquote>
+<h5 id="记事本跟“联通”有仇？"><a href="#记事本跟“联通”有仇？" class="headerlink" title="记事本跟“联通”有仇？"></a>记事本跟“联通”有仇？</h5><p>在编码界有这么一个传说：记事本跟“联通”有仇。这是怎么一回事呢？</p>
+<p>新建一个文本文件“test.txt”，录入两个汉字“联通”，保存，关闭程序然后再次打开这一文件：</p>
+<p><a href="http://static.oschina.net/uploads/img/201505/11194653_TPFU.png" target="_blank" rel="noopener"><img src="http://static.oschina.net/uploads/img/201505/11194654_6cQX.png" alt="image"></a></p>
+<p>咦，这是什么鬼？咱们的“联通”呢？</p>
+<h5 id="深入分析"><a href="#深入分析" class="headerlink" title="深入分析"></a>深入分析</h5><p>这其实就是竞猜失败的结果了，准确地讲，记事本把编码给猜成了UTF-8.</p>
+<blockquote>
+<p>为什么说是猜成UTF-8造成的呢？我也没见过源码！接下来会根据出现的现象，已有的证据来作出我们的推论，然后还会做些实验去验证。（没错，这就是科学！）</p>
+</blockquote>
+<p>首先是这样一个事实：当我们保存时，使用的是缺省编码，也就是GBK。</p>
+<p>“联通”两字的GBK编码如下：</p>
+<p><a href="http://static.oschina.net/uploads/img/201505/11194654_bXwB.png" target="_blank" rel="noopener"><img src="http://static.oschina.net/uploads/img/201505/11194654_EN3a.png" alt="image"></a></p>
+<p>然后，是这样一个现象：再次打开时，记事本突然就翻脸不认人了，显示出了一些奇怪的字符。</p>
+<blockquote>
+<p>严格地讲，有三个字符，两个问号及一个C一样的字符，后面会分析为何会这样。</p>
+</blockquote>
+<p>以上字节咋一看也没啥子特别的，领头字节也没有恰好等于UTF-16或UTF-8的BOM，绝对标准的GBK模式，为啥记事本对它另眼相看了呢？</p>
+<blockquote>
+<p>关于GBK等编码，可参见<a href="http://my.oschina.net/goldenshaw/blog/352859" target="_blank" rel="noopener">字符集与编码（九）——GB2312，GBK，GB18030</a></p>
+</blockquote>
+<p>那么，一个合理的猜测就是记事本可能把它当成了无BOM的UTF-8编码。</p>
+<p>而对于UTF-8编码来说，它的编码模式还是很有自己特色的，那么我们换成二进制形式查看以上编码：</p>
+<p><a href="http://static.oschina.net/uploads/img/201505/11194654_pLP5.png" target="_blank" rel="noopener"><img src="http://static.oschina.net/uploads/img/201505/11194654_JqZz.png" alt="image"></a></p>
+<blockquote>
+<p>看到以上编码，相信对UTF-8编码模式有一些了解的都知道是怎么回事了，我也用颜色的下标标注了关键的部分。</p>
+</blockquote>
+<p>在前面的篇章中，也曾经几次说到过UTF-8的编码模式：</p>
+<p><a href="http://static.oschina.net/uploads/img/201505/11194654_yp7x.png" target="_blank" rel="noopener"><img src="http://static.oschina.net/uploads/img/201505/11194654_SPb3.png" alt="image"></a></p>
+<blockquote>
+<p>见<a href="http://my.oschina.net/goldenshaw/blog/307708" target="_blank" rel="noopener">字符集与编码（三）——定长与变长</a>及<a href="http://my.oschina.net/goldenshaw/blog/310331" target="_blank" rel="noopener">字符集与编码（四）——Unicode</a></p>
+</blockquote>
+<p>对比一下，不难发现上述两个编码完全符合二字节模式！也难怪记事本犯迷糊了。</p>
+<blockquote>
+<p>自然，要做出一些“科学”的发现，你还是需要一定的基础的。所以在这里也给出了很多前面文章的链接。</p>
+</blockquote>
+<h5 id="显示疑云"><a href="#显示疑云" class="headerlink" title="显示疑云"></a>显示疑云</h5><p>那么，为何又显示成了那样的效果呢？</p>
+<p>既然推断它是UTF-8编码，让我们人肉解码一下：</p>
+<blockquote>
+<p>前两字节构成一组：<strong>11000001 10101010</strong></p>
+<p>有效的码位有三段：<strong>11000001 10101010</strong></p>
+<p>重组成码点之后是：<strong>00000000 01101010</strong></p>
+</blockquote>
+<p>以上码点写成16进制是U+006A，这明明是一个一字节的码点！对应的字母其实是小写字母“j”。</p>
+<blockquote>
+<p>所以，这里其实是有错误的。这个码点不应该用二字节来编码。</p>
+</blockquote>
+<p>如果你读过前面关于Unicode的篇章，就会明白，对于UTF-8编码而言，码点在U+0000~U+007F（0-127）间的用一字节模式编码。码点在U+0080~U+07FF（128-2047）间的才用二字节模式编码。</p>
+<blockquote>
+<p>别问为什么！这叫乌龟的屁股——龟腚（规定）。</p>
+</blockquote>
+<p>理论上讲，二字节的空间是完全可以囊括一字节编码的那些码点的，各种模式间其实是有重叠与冗余的。但如果一个码点适用于更少字节，那么它应该优先用更少字节的编码模式。</p>
+<blockquote>
+<p>所以，通常说UTF-8的二字节模式是“110x xxxx, 10xx xxxx”，但并非所有满足这些模式的编码都是合法的UTF-8二字节编码。这里面其实是有个坑的。二字节首个码点为U+0080，对应二字节模式首字节为“1100 0010”，那么，所有合法的二字节模式首字节不应该小于此值。</p>
+<p>显然，亲爱的微软的写记事本的程序员们，你们偷懒了！你们至少应该可以避免与“联通”结仇。</p>
+</blockquote>
+<p>那么，虽然能够解出相应的码点，但其实是非法的组合，这也就是结果显示出“�”的原因。这通常是一个明显的解释失败的标志。</p>
+<blockquote>
+<p>注：“�”本身是一个合法的Unicode字符，码点为U+FFFD，对应的UTF-8编码为：EF BF BD。如果字体不支持的话，可参见<a href="http://www.fileformat.info/info/unicode/char/fffd/index.htm" target="_blank" rel="noopener">http://www.fileformat.info/info/unicode/char/fffd/index.htm</a></p>
+<p><a href="http://static.oschina.net/uploads/img/201505/11194654_nlGM.png" target="_blank" rel="noopener"><img src="http://static.oschina.net/uploads/img/201505/11194654_Kvmf.png" alt="image"></a></p>
+<p>这可不是“显示不出来”造成的，它本身就长这样。</p>
+<p>这个码点的含义为“replacement character”（替换字符）。当碰到非法的字节时，显示系统就用它来替换，然后显示这个替换字符来表示发生了替换。所以，那些真正“显示不出来”的东西已经被替换了。（如果文件中本身就包含这个字符的话，替换上去的和原有的实际是无法区分的。）</p>
+</blockquote>
+<p>在这里，程序实际临时在内存中做了替换，如果你对它进行拷贝，得到的也将是它的值，而不是原来的值。</p>
+<blockquote>
+<p>所以，显示层面出现了问号（包括早期的ASCII中那个问号“?”，U+001A，也常用作替换字符），不代表它不清楚如何显示，而完全是因为最终交给它去渲染的就是“问号”字符。（可能是替换上去的，也可能本身就有的。）</p>
+</blockquote>
+<p>在显示层面，原来的值实际已经丢失了。</p>
+<blockquote>
+<p>至于为何显示了两个问号，大概是把两个字节当作了两次失败。个人认为显示一个问号也能说得通。</p>
+</blockquote>
+<p>再来看第二组</p>
+<blockquote>
+<p>后两字节构成一组：<strong>11001101 10101000</strong></p>
+<p>有效的码位有三段：<strong>11001101 10101000</strong></p>
+<p>重组成码点之后是：<strong>00000011 01101000</strong></p>
+</blockquote>
+<p>以上码点写成16进制是U+0368，对应的字母其实是所谓的COMBINING LATIN SMALL LETTER Cͨ（&lt;–这里第二个C就是U+0368）。见“<a href="http://www.fileformat.info/info/unicode/char/0368/index.htm" target="_blank" rel="noopener">http://www.fileformat.info/info/unicode/char/0368/index.htm</a>”</p>
+<blockquote>
+<p>显示时，它会紧贴在前面的字母上，这是Unicode中个人感觉比较奇葩的一些内容，如果你有兴趣，这是wiki的一些介绍<a href="http://en.wikipedia.org/wiki/Combining_character" target="_blank" rel="noopener">http://en.wikipedia.org/wiki/Combining_character</a></p>
+<p>前面乱码的截图中，那个怪怪的C就是这样来的，感觉好像与前面一个问号是一体的一样。</p>
+<p><a href="http://static.oschina.net/uploads/img/201505/11194654_sL9M.png" target="_blank" rel="noopener"><img src="http://static.oschina.net/uploads/img/201505/11194654_c0E6.png" alt="image"></a></p>
+<p>“联通”这一案例还真多梗。</p>
+</blockquote>
+<p>至此，冤有头，债有主，一切都水落石出。最终我们的猜测被证实。</p>
+<h5 id="直接证据！"><a href="#直接证据！" class="headerlink" title="直接证据！"></a>直接证据！</h5><p>其实，在变成怪怪的字符后，如果我们点击“另存为”，在弹出的对话框中会发现编码成了“UTF-8”</p>
+<p><a href="http://static.oschina.net/uploads/img/201505/11194654_xla2.png" target="_blank" rel="noopener"><img src="http://static.oschina.net/uploads/img/201505/11194655_wDfJ.png" alt="image"></a></p>
+<blockquote>
+<p>这是赤裸裸的证据，直接表明了记事本把编码误判成了UTF-8！简直是铁证如山呀！</p>
+</blockquote>
+<h5 id="打破模式"><a href="#打破模式" class="headerlink" title="打破模式"></a>打破模式</h5><p>删掉test.txt，从新再建立，这次把联通的好基友“电信”也一起录入，录入“联通电信”四个字，保存并再次打开时记事本就不再抽疯了，因为“电信”两字的GBK编码模式与UTF-8不能匹配了，读者可自行验证一下，这里就不再贴图展示了。</p>
+<blockquote>
+<p>注：不要直接删除原来的乱码字符并重新录入，前面“另存为”已经表明它已经成了UTF-8编码，直接在原文件修改将导致以UTF-8编码保存。所以应该删除原文件。</p>
+</blockquote>
+<p>有句话叫“无巧不成书”，记事本跟“联通”有仇，这其实就是一个因为样本太少而误判的典型例子。</p>
+<h4 id="缺省编码，ANSI是个什么玩意"><a href="#缺省编码，ANSI是个什么玩意" class="headerlink" title="缺省编码，ANSI是个什么玩意"></a>缺省编码，ANSI是个什么玩意</h4><p>如果既没有BOM，又无法猜测出所使用的编码，那是否就只能是两眼一抹黑了呢？</p>
+<blockquote>
+<p>还好，计算机世界还有件贴心的小棉袄叫“缺省”。</p>
+</blockquote>
+<p>其实，当你保存任何一个文本文件时，指定一个编码是必不可少的一个步骤。</p>
+<blockquote>
+<p>与此类似，读取一个文本文件时，或者说是比如Java中new一个Reader字符流时，又或者是string.getBytes时，你其实都是需要指定一个编码的。</p>
+</blockquote>
+<p>但很多时候，我们并没有感觉到需要这一步骤，原因就是“缺省”在为我们默默地服务。</p>
+<blockquote>
+<p>缺省这玩意，怎么说它好呢？当它正常时，你好，我好，大家好。当它不正常时，你甚至不知道哪儿出错了。你过于依赖它，它很可能成为你的定时炸弹。不得不说，很多时候我们其实是抱着炸弹在击鼓传花，还玩得不亦乐乎，直到“轰”的一声，咦？头上什么时候多了个圈？</p>
+</blockquote>
+<p>以记事本为例，当我们新建一个文件并保存时，其实是有个选项的，通常，这里会缺省地选上“ANSI”</p>
+<p><a href="http://static.oschina.net/uploads/img/201505/11194655_bMWi.png" target="_blank" rel="noopener"><img src="http://static.oschina.net/uploads/img/201505/11194655_4hCv.png" alt="image_thumb3"></a></p>
+<p>那么这里的ANSI又是个什么鬼呢？</p>
+<blockquote>
+<p>ANSI（American National Standards Institute美国国家标准学会）与它字面的意思并不相符，它也不是一种真正意义上的编码。</p>
+</blockquote>
+<p>通常把它理解成平台缺省编码，它具体指代什么则通常与平台所在地区的Windows发行版本有关。</p>
+<blockquote>
+<p>像我们这些火墙内的大陆人民，多数人用的Windows版本，ANSI指的是GBK；在香港台湾地区，它可能是Big5；在一些欧洲地区，它则可能是ISO-8859-1。</p>
+</blockquote>
+<p>除了ANSI之外，在这里还有其它的选项。</p>
+<blockquote>
+<p>其实在这里短短的一个下拉列表，处处都是坑呀，说多了都是泪。</p>
+<p>\1. ANSI，前面已说，就不说了。</p>
+<p>\2. Unicode。其实是UTF-16，具体地讲是UTF-16 little endian（UTF-16 LE）。这个缺省为Little Endian也仅是微软平台的缺省。其它平台未必是如此。</p>
+<p>\3. Unicode big endian。与之前类似，就是UTF-16 big endian（UTF-16 BE）。Unicode现在的含义太宽泛，可以指Unicode字符集，可以指Unicode码点，也可以指整个Unicode标准。现在看来，把UTF-16继续叫成Unicode实在是很坑爹，除了容易引发误解，我还真没想到它还能有什么其它好处~</p>
+<p>\4. UTF-8.其实是“带BOM的UTF-8”，而真正推荐的缺省做法是“不带BOM”。微软就是任性！</p>
+</blockquote>
+<p>还需要注意的是，不同的操作系统对于缺省有不同的策略。</p>
+<blockquote>
+<p>比如现在很多的Linux的操作系统都把UTF-8当成了缺省的编码，无论你在什么地区都是如此。这对于减少混乱还是有帮助的。</p>
+</blockquote>
+<p>因为文件内容没有编码的信息，各个系统平台对于缺省的规定又各不相同，种种情况导致了乱码问题层出不穷.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/编码/" rel="tag"># 编码</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/13/vscode_git/" rel="next" title="vscode-git">
+                <i class="fa fa-chevron-left"></i> vscode-git
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/15/unorder_set与自定义类型/" rel="prev" title="unordered_map/set以及自定义类型">
+                unordered_map/set以及自定义类型 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Lon</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chonlon" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:lonelycooler.xcl@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#混乱的现状"><span class="nav-number">1.</span> <span class="nav-text">混乱的现状</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#没有编码信息"><span class="nav-number">1.1.</span> <span class="nav-text">没有编码信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BOM？"><span class="nav-number">1.2.</span> <span class="nav-text">BOM？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#确定编码的步骤"><span class="nav-number">2.</span> <span class="nav-text">确定编码的步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#利用BOM"><span class="nav-number">2.1.</span> <span class="nav-text">利用BOM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#我猜，我猜，我猜猜猜"><span class="nav-number">2.2.</span> <span class="nav-text">我猜，我猜，我猜猜猜</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#记事本跟“联通”有仇？"><span class="nav-number">2.2.1.</span> <span class="nav-text">记事本跟“联通”有仇？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#深入分析"><span class="nav-number">2.2.2.</span> <span class="nav-text">深入分析</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#显示疑云"><span class="nav-number">2.2.3.</span> <span class="nav-text">显示疑云</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#直接证据！"><span class="nav-number">2.2.4.</span> <span class="nav-text">直接证据！</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#打破模式"><span class="nav-number">2.2.5.</span> <span class="nav-text">打破模式</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺省编码，ANSI是个什么玩意"><span class="nav-number">2.3.</span> <span class="nav-text">缺省编码，ANSI是个什么玩意</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lon</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>

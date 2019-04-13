@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="python3: 我们利用CookieJar对象实现获取cookie的功能，存储到变量中。然后使用这个cookie变量创建opener，使用这个设置好cookie的opener即可模拟登陆，同笔记四中讲到的IP代理的使用方法类似。 ​    创建cookie_test.py文件，编写代码如下： 1234567891011121314151617181920212223242526272829303">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="爬虫cookies的使用方法">
+<meta property="og:url" content="http://chon.wang/2018/05/14/爬虫cookies使用方法/index.html">
+<meta property="og:site_name" content="LLLon">
+<meta property="og:description" content="python3: 我们利用CookieJar对象实现获取cookie的功能，存储到变量中。然后使用这个cookie变量创建opener，使用这个设置好cookie的opener即可模拟登陆，同笔记四中讲到的IP代理的使用方法类似。 ​    创建cookie_test.py文件，编写代码如下： 1234567891011121314151617181920212223242526272829303">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://qiniu.cuiqingcai.com/wp-content/uploads/2015/02/QQ%E6%88%AA%E5%9B%BE20150215215136.jpg">
+<meta property="og:updated_time" content="2019-04-13T15:14:08.798Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="爬虫cookies的使用方法">
+<meta name="twitter:description" content="python3: 我们利用CookieJar对象实现获取cookie的功能，存储到变量中。然后使用这个cookie变量创建opener，使用这个设置好cookie的opener即可模拟登陆，同笔记四中讲到的IP代理的使用方法类似。 ​    创建cookie_test.py文件，编写代码如下： 1234567891011121314151617181920212223242526272829303">
+<meta name="twitter:image" content="http://qiniu.cuiqingcai.com/wp-content/uploads/2015/02/QQ%E6%88%AA%E5%9B%BE20150215215136.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chon.wang/2018/05/14/爬虫cookies使用方法/">
+
+
+
+
+
+  <title>爬虫cookies的使用方法 | LLLon</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">LLLon</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chon.wang/2018/05/14/爬虫cookies使用方法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lon">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LLLon">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">爬虫cookies的使用方法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-14T00:00:00+08:00">
+                2018-05-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习/" itemprop="url" rel="index">
+                    <span itemprop="name">学习</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习/Python/爬虫/" itemprop="url" rel="index">
+                    <span itemprop="name">爬虫</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>python3:</p>
+<p>我们利用CookieJar对象实现获取cookie的功能，存储到变量中。然后使用这个cookie变量创建opener，使用这个设置好cookie的opener即可模拟登陆，同笔记四中讲到的IP代理的使用方法类似。</p>
+<p>​    创建cookie_test.py文件，编写代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"># -*- coding: UTF-8 -*-</span><br><span class="line">from urllib import request</span><br><span class="line">from urllib import error</span><br><span class="line">from urllib import parse</span><br><span class="line">from http import cookiejar</span><br><span class="line"></span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    #登陆地址</span><br><span class="line">    login_url = &apos;http://www.jobbole.com/wp-admin/admin-ajax.php&apos;    </span><br><span class="line">    #User-Agent信息                   </span><br><span class="line">    user_agent = r&apos;Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.94 Safari/537.36&apos;</span><br><span class="line">    #Headers信息</span><br><span class="line">    head = &#123;&apos;User-Agnet&apos;: user_agent, &apos;Connection&apos;: &apos;keep-alive&apos;&#125;</span><br><span class="line">    #登陆Form_Data信息</span><br><span class="line">    Login_Data = &#123;&#125;</span><br><span class="line">    Login_Data[&apos;action&apos;] = &apos;user_login&apos;</span><br><span class="line">    Login_Data[&apos;redirect_url&apos;] = &apos;http://www.jobbole.com/&apos;</span><br><span class="line">    Login_Data[&apos;remember_me&apos;] = &apos;0&apos;         #是否一个月内自动登陆</span><br><span class="line">    Login_Data[&apos;user_login&apos;] = &apos;********&apos;       #改成你自己的用户名</span><br><span class="line">    Login_Data[&apos;user_pass&apos;] = &apos;********&apos;        #改成你自己的密码</span><br><span class="line">    #使用urlencode方法转换标准格式</span><br><span class="line">    logingpostdata = parse.urlencode(Login_Data).encode(&apos;utf-8&apos;)</span><br><span class="line">    #声明一个CookieJar对象实例来保存cookie</span><br><span class="line">    cookie = cookiejar.CookieJar()</span><br><span class="line">    #利用urllib.request库的HTTPCookieProcessor对象来创建cookie处理器,也就CookieHandler</span><br><span class="line">    cookie_support = request.HTTPCookieProcessor(cookie)</span><br><span class="line">    #通过CookieHandler创建opener</span><br><span class="line">    opener = request.build_opener(cookie_support)</span><br><span class="line">    #创建Request对象</span><br><span class="line">    req1 = request.Request(url=login_url, data=logingpostdata, headers=head)</span><br><span class="line"></span><br><span class="line">    #面向对象地址</span><br><span class="line">    date_url = &apos;http://date.jobbole.com/wp-admin/admin-ajax.php&apos;</span><br><span class="line">    #面向对象</span><br><span class="line">    Date_Data = &#123;&#125;</span><br><span class="line">    Date_Data[&apos;action&apos;] = &apos;get_date_contact&apos;</span><br><span class="line">    Date_Data[&apos;postId&apos;] = &apos;4128&apos;</span><br><span class="line">    #使用urlencode方法转换标准格式</span><br><span class="line">    datepostdata = parse.urlencode(Date_Data).encode(&apos;utf-8&apos;)</span><br><span class="line">    req2 = request.Request(url=date_url, data=datepostdata, headers=head)</span><br><span class="line">    try:</span><br><span class="line">        #使用自己创建的opener的open方法</span><br><span class="line">        response1 = opener.open(req1)</span><br><span class="line">        response2 = opener.open(req2)</span><br><span class="line">        html = response2.read().decode(&apos;utf-8&apos;)</span><br><span class="line">        index = html.find(&apos;jb_contact_email&apos;)</span><br><span class="line">        #打印查询结果</span><br><span class="line">        print(&apos;联系邮箱:%s&apos; % html[index+19:-2])</span><br><span class="line"></span><br><span class="line">    except error.URLError as e:</span><br><span class="line">        if hasattr(e, &apos;code&apos;):</span><br><span class="line">            print(&quot;HTTPError:%d&quot; % e.code)</span><br><span class="line">        elif hasattr(e, &apos;reason&apos;):</span><br><span class="line">            print(&quot;URLError:%s&quot; % e.reason)</span><br></pre></td></tr></table></figure>
+<p>python2:</p>
+<h2 id="1-Opener"><a href="#1-Opener" class="headerlink" title="1.Opener"></a>1.Opener</h2><p>当你获取一个URL你使用一个opener(一个urllib2.OpenerDirector的实例)。在前面，我们都是使用的默认的opener，也就是urlopen。它是一个特殊的opener，可以理解成opener的一个特殊实例，传入的参数仅仅是url，data，timeout。</p>
+<p>如果我们需要用到Cookie，只用这个opener是不能达到目的的，所以我们需要创建更一般的opener来实现对Cookie的设置。</p>
+<h2 id="2-Cookielib"><a href="#2-Cookielib" class="headerlink" title="2.Cookielib"></a>2.Cookielib</h2><p>cookielib模块的主要作用是提供可存储cookie的对象，以便于与urllib2模块配合使用来访问Internet资源。Cookielib模块非常强大，我们可以利用本模块的CookieJar类的对象来捕获cookie并在后续连接请求时重新发送，比如可以实现模拟登录功能。该模块主要的对象有CookieJar、FileCookieJar、MozillaCookieJar、LWPCookieJar。</p>
+<p>它们的关系：CookieJar —-派生—-&gt;FileCookieJar  —-派生—–&gt;MozillaCookieJar和LWPCookieJar</p>
+<h3 id="1）获取Cookie保存到变量"><a href="#1）获取Cookie保存到变量" class="headerlink" title="1）获取Cookie保存到变量"></a>1）获取Cookie保存到变量</h3><p>首先，我们先利用CookieJar对象实现获取cookie的功能，存储到变量中，先来感受一下<br><figure class="highlight plain"><figcaption><span>cookielib</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#声明一个CookieJar对象实例来保存cookie</span><br><span class="line">cookie = cookielib.CookieJar()</span><br><span class="line">#利用urllib2库的HTTPCookieProcessor对象来创建cookie处理器</span><br><span class="line">handler=urllib2.HTTPCookieProcessor(cookie)</span><br><span class="line">#通过handler来构建opener</span><br><span class="line">opener = urllib2.build_opener(handler)</span><br><span class="line">#此处的open方法同urllib2的urlopen方法，也可以传入request</span><br><span class="line">response = opener.open(&apos;http://www.baidu.com&apos;)</span><br><span class="line">for item in cookie:</span><br><span class="line">    print &apos;Name = &apos;+item.name</span><br><span class="line">    print &apos;Value = &apos;+item.value</span><br></pre></td></tr></table></figure></p>
+<p>我们使用以上方法将cookie保存到变量中，然后打印出了cookie中的值，运行结果如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Name = BAIDUID</span><br><span class="line">Value = B07B663B645729F11F659C02AAE65B4C:FG=1</span><br><span class="line">Name = BAIDUPSID</span><br><span class="line">Value = B07B663B645729F11F659C02AAE65B4C</span><br><span class="line">Name = H_PS_PSSID</span><br><span class="line">Value = 12527_11076_1438_10633</span><br><span class="line">Name = BDSVRTM</span><br><span class="line">Value = 0</span><br><span class="line">Name = BD_HOME</span><br><span class="line">Value = 0</span><br><span class="line">Name = BAIDUID</span><br><span class="line">Value = B07B663B645729F11F659C02AAE65B4C:FG=1</span><br><span class="line">Name = BAIDUPSID</span><br><span class="line">Value = B07B663B645729F11F659C02AAE65B4C</span><br><span class="line">Name = H_PS_PSSID</span><br><span class="line">Value = 12527_11076_1438_10633</span><br><span class="line">Name = BDSVRTM</span><br><span class="line">Value = 0</span><br><span class="line">Name = BD_HOME</span><br><span class="line">Value = 0</span><br></pre></td></tr></table></figure>
+<h3 id="2）保存Cookie到文件"><a href="#2）保存Cookie到文件" class="headerlink" title="2）保存Cookie到文件"></a>2）保存Cookie到文件</h3><p>在上面的方法中，我们将cookie保存到了cookie这个变量中，如果我们想将cookie保存到文件中该怎么做呢？这时，我们就要用到</p>
+<p>FileCookieJar这个对象了，在这里我们使用它的子类MozillaCookieJar来实现Cookie的保存</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> cookielib</span><br><span class="line"><span class="keyword">import</span> urllib2</span><br><span class="line"></span><br><span class="line"><span class="comment">#设置保存cookie的文件，同级目录下的cookie.txt</span></span><br><span class="line">filename = <span class="string">'cookie.txt'</span></span><br><span class="line"><span class="comment">#声明一个MozillaCookieJar对象实例来保存cookie，之后写入文件</span></span><br><span class="line">cookie = cookielib.MozillaCookieJar(filename)</span><br><span class="line"><span class="comment">#利用urllib2库的HTTPCookieProcessor对象来创建cookie处理器</span></span><br><span class="line">handler = urllib2.HTTPCookieProcessor(cookie)</span><br><span class="line"><span class="comment">#通过handler来构建opener</span></span><br><span class="line">opener = urllib2.build_opener(handler)</span><br><span class="line"><span class="comment">#创建一个请求，原理同urllib2的urlopen</span></span><br><span class="line">response = opener.open(<span class="string">"http://www.baidu.com"</span>)</span><br><span class="line"><span class="comment">#保存cookie到文件</span></span><br><span class="line">cookie.save(ignore_discard=<span class="literal">True</span>, ignore_expires=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> cookielib</span><br><span class="line"><span class="keyword">import</span> urllib2</span><br><span class="line"> </span><br><span class="line"><span class="comment">#设置保存cookie的文件，同级目录下的cookie.txt</span></span><br><span class="line">filename = <span class="string">'cookie.txt'</span></span><br><span class="line"><span class="comment">#声明一个MozillaCookieJar对象实例来保存cookie，之后写入文件</span></span><br><span class="line">cookie = cookielib.MozillaCookieJar(filename)</span><br><span class="line"><span class="comment">#利用urllib2库的HTTPCookieProcessor对象来创建cookie处理器</span></span><br><span class="line">handler = urllib2.HTTPCookieProcessor(cookie)</span><br><span class="line"><span class="comment">#通过handler来构建opener</span></span><br><span class="line">opener = urllib2.build_opener(handler)</span><br><span class="line"><span class="comment">#创建一个请求，原理同urllib2的urlopen</span></span><br><span class="line">response = opener.open(<span class="string">"http://www.baidu.com"</span>)</span><br><span class="line"><span class="comment">#保存cookie到文件</span></span><br><span class="line">cookie.save(ignore_discard=<span class="literal">True</span>, ignore_expires=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<p>关于最后save方法的两个参数在此说明一下：</p>
+<p>官方解释如下：</p>
+<blockquote>
+<p><em>ignore_discard: save even cookies set to be discarded. </em></p>
+<p><em>ignore_expires: save even cookies that have expiredThe file is overwritten if it already exists</em></p>
+</blockquote>
+<p>由此可见，ignore_discard的意思是即使cookies将被丢弃也将它保存下来，ignore_expires的意思是如果在该文件中cookies已经存在，则覆盖原文件写入，在这里，我们将这两个全部设置为True。运行之后，cookies将被保存到cookie.txt文件中，我们查看一下内容，附图如下</p>
+<p><a href="http://qiniu.cuiqingcai.com/wp-content/uploads/2015/02/QQ%E6%88%AA%E5%9B%BE20150215215136.jpg" target="_blank" rel="noopener"><img src="http://qiniu.cuiqingcai.com/wp-content/uploads/2015/02/QQ%E6%88%AA%E5%9B%BE20150215215136.jpg" alt="QQ截图20150215215136"></a></p>
+<h3 id="3）从文件中获取Cookie并访问"><a href="#3）从文件中获取Cookie并访问" class="headerlink" title="3）从文件中获取Cookie并访问"></a>3）从文件中获取Cookie并访问</h3><p>那么我们已经做到把Cookie保存到文件中了，如果以后想使用，可以利用下面的方法来读取cookie并访问网站，感受一下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cookielib</span><br><span class="line"><span class="keyword">import</span> urllib2</span><br><span class="line"> </span><br><span class="line"><span class="comment">#创建MozillaCookieJar实例对象</span></span><br><span class="line">cookie = cookielib.MozillaCookieJar()</span><br><span class="line"><span class="comment">#从文件中读取cookie内容到变量</span></span><br><span class="line">cookie.load(<span class="string">'cookie.txt'</span>, ignore_discard=<span class="literal">True</span>, ignore_expires=<span class="literal">True</span>)</span><br><span class="line"><span class="comment">#创建请求的request</span></span><br><span class="line">req = urllib2.Request(<span class="string">"http://www.baidu.com"</span>)</span><br><span class="line"><span class="comment">#利用urllib2的build_opener方法创建一个opener</span></span><br><span class="line">opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie))</span><br><span class="line">response = opener.open(req)</span><br><span class="line"><span class="keyword">print</span> response.read()</span><br></pre></td></tr></table></figure>
+<p>设想，如果我们的 cookie.txt 文件中保存的是某个人登录百度的cookie，那么我们提取出这个cookie文件内容，就可以用以上方法模拟这个人的账号登录百度。</p>
+<h3 id="4）利用cookie模拟网站登录"><a href="#4）利用cookie模拟网站登录" class="headerlink" title="4）利用cookie模拟网站登录"></a>4）利用cookie模拟网站登录</h3><p>下面我们以我们学校的教育系统为例，利用cookie实现模拟登录，并将cookie信息保存到文本文件中，来感受一下cookie大法吧！</p>
+<p>注意：密码我改了啊，别偷偷登录本宫的选课系统 o(╯□╰)o</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib</span><br><span class="line"><span class="keyword">import</span> urllib2</span><br><span class="line"><span class="keyword">import</span> cookielib</span><br><span class="line"> </span><br><span class="line">filename = <span class="string">'cookie.txt'</span></span><br><span class="line"><span class="comment">#声明一个MozillaCookieJar对象实例来保存cookie，之后写入文件</span></span><br><span class="line">cookie = cookielib.MozillaCookieJar(filename)</span><br><span class="line">opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie))</span><br><span class="line">postdata = urllib.urlencode(&#123;</span><br><span class="line">            <span class="string">'stuid'</span>:<span class="string">'201200131012'</span>,</span><br><span class="line">            <span class="string">'pwd'</span>:<span class="string">'23342321'</span></span><br><span class="line">        &#125;)</span><br><span class="line"><span class="comment">#登录教务系统的URL</span></span><br><span class="line">loginUrl = <span class="string">'http://jwxt.sdu.edu.cn:7890/pls/wwwbks/bks_login2.login'</span></span><br><span class="line"><span class="comment">#模拟登录，并把cookie保存到变量</span></span><br><span class="line">result = opener.open(loginUrl,postdata)</span><br><span class="line"><span class="comment">#保存cookie到cookie.txt中</span></span><br><span class="line">cookie.save(ignore_discard=<span class="literal">True</span>, ignore_expires=<span class="literal">True</span>)</span><br><span class="line"><span class="comment">#利用cookie请求访问另一个网址，此网址是成绩查询网址</span></span><br><span class="line">gradeUrl = <span class="string">'http://jwxt.sdu.edu.cn:7890/pls/wwwbks/bkscjcx.curscopre'</span></span><br><span class="line"><span class="comment">#请求访问成绩查询网址</span></span><br><span class="line">result = opener.open(gradeUrl)</span><br><span class="line"><span class="keyword">print</span> result.read()</span><br></pre></td></tr></table></figure>
+<p>以上程序的原理如下</p>
+<p>创建一个带有cookie的opener，在访问登录的URL时，将登录后的cookie保存下来，然后利用这个cookie来访问其他网址。</p>
+<p>如登录之后才能查看的成绩查询呀，本学期课表呀等等网址，模拟登录就这么实现</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/22/基数排序/" rel="next" title="基数排序">
+                <i class="fa fa-chevron-left"></i> 基数排序
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/20/Python爬虫相关记录/" rel="prev" title="爬虫cookies的使用方法">
+                爬虫cookies的使用方法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Lon</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chonlon" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:lonelycooler.xcl@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Opener"><span class="nav-number">1.</span> <span class="nav-text">1.Opener</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Cookielib"><span class="nav-number">2.</span> <span class="nav-text">2.Cookielib</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1）获取Cookie保存到变量"><span class="nav-number">2.1.</span> <span class="nav-text">1）获取Cookie保存到变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2）保存Cookie到文件"><span class="nav-number">2.2.</span> <span class="nav-text">2）保存Cookie到文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3）从文件中获取Cookie并访问"><span class="nav-number">2.3.</span> <span class="nav-text">3）从文件中获取Cookie并访问</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4）利用cookie模拟网站登录"><span class="nav-number">2.4.</span> <span class="nav-text">4）利用cookie模拟网站登录</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lon</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true}});</script></body>
+</html>
