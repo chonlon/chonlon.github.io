@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="git,">
+  <meta name="keywords" content="Qt,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="there is many ways.">
-<meta name="keywords" content="git">
+<meta name="description" content="所有的QtChart相关类都是在命名空间QtCharts下的.  使用QLineSeries的时候如果需要用到导航线, 并且设置tickCount等属性需要转换类型后使用: 12auto ver_axis =        dynamic_cast&amp;lt;QValueAxis *&amp;gt;(chart-&amp;gt;axes(Qt::Vertical).first());  默认的TickCount会">
+<meta name="keywords" content="Qt">
 <meta property="og:type" content="article">
-<meta property="og:title" content="git的基本使用">
-<meta property="og:url" content="http://yoursite.com/2017/01/24/test/index.html">
+<meta property="og:title" content="QChart和QLineSeries使用注意">
+<meta property="og:url" content="http://yoursite.com/2019/04/01/QChart和QLineSeries使用注意/index.html">
 <meta property="og:site_name" content="LLLon">
-<meta property="og:description" content="there is many ways.">
+<meta property="og:description" content="所有的QtChart相关类都是在命名空间QtCharts下的.  使用QLineSeries的时候如果需要用到导航线, 并且设置tickCount等属性需要转换类型后使用: 12auto ver_axis =        dynamic_cast&amp;lt;QValueAxis *&amp;gt;(chart-&amp;gt;axes(Qt::Vertical).first());  默认的TickCount会">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-11T12:57:11.757Z">
+<meta property="og:updated_time" content="2019-04-13T03:58:38.602Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="git的基本使用">
-<meta name="twitter:description" content="there is many ways.">
+<meta name="twitter:title" content="QChart和QLineSeries使用注意">
+<meta name="twitter:description" content="所有的QtChart相关类都是在命名空间QtCharts下的.  使用QLineSeries的时候如果需要用到导航线, 并且设置tickCount等属性需要转换类型后使用: 12auto ver_axis =        dynamic_cast&amp;lt;QValueAxis *&amp;gt;(chart-&amp;gt;axes(Qt::Vertical).first());  默认的TickCount会">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/01/24/test/">
+  <link rel="canonical" href="http://yoursite.com/2019/04/01/QChart和QLineSeries使用注意/">
 
 
 
 
 
-  <title>git的基本使用 | LLLon</title>
+  <title>QChart和QLineSeries使用注意 | LLLon</title>
   
 
 
@@ -263,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/24/test/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/01/QChart和QLineSeries使用注意/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Lon">
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">git的基本使用</h1>
+          <h1 class="post-title" itemprop="name headline">QChart和QLineSeries使用注意</h1>
         
 
         <div class="post-meta">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-24T00:00:00+08:00">
-                2017-01-24
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-01T00:00:00+08:00">
+                2019-04-01
               </time>
             
 
@@ -326,8 +326,19 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/git/" itemprop="url" rel="index">
-                    <span itemprop="name">git</span>
+                  <a href="/categories/学习/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C++</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习/C/Qt/" itemprop="url" rel="index">
+                    <span itemprop="name">Qt</span>
                   </a>
                 </span>
 
@@ -364,7 +375,21 @@
 
       
         <a id="more"></a>
-<p>there is many ways.</p>
+<ul>
+<li><p>所有的QtChart相关类都是在命名空间QtCharts下的.</p>
+</li>
+<li><p>使用QLineSeries的时候如果需要用到导航线, 并且设置tickCount等属性需要转换类型后使用:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> ver_axis =</span><br><span class="line">        <span class="keyword">dynamic_cast</span>&lt;QValueAxis *&gt;(chart-&gt;axes(Qt::Vertical).first());</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>默认的TickCount会直接使用你设置的Range中的最大值除以TickCount, 坐标带有小数, 可以自己使用函数调整显示效果:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ver_axis-&gt;setGridLineVisible(<span class="literal">true</span>);</span><br><span class="line">    <span class="comment">//当纵轴很长时只取最大15, 避免卡顿</span></span><br><span class="line">    ver_axis-&gt;setTickCount(<span class="built_in">std</span>::min(<span class="number">15</span>, _max + <span class="number">1</span>) + <span class="number">1</span>);</span><br><span class="line">    ver_axis-&gt;setRange(<span class="number">0</span>, makeAxisInteger(ver_axis-&gt;tickCount(), _max));</span><br><span class="line">    ver_axis-&gt;setLabelFormat(<span class="string">"%d"</span>);</span><br></pre></td></tr></table></figure>
+<p>makeAxisInterger函数定义如下:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// &lt;summary&gt;</span></span><br><span class="line"><span class="comment">/// 通过给定的tickcount 和 最大值来确定坐标最大值以便使每个纵坐标恰好为整数.</span></span><br><span class="line"><span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">makeAxisInteger</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> &amp;tick_count, <span class="keyword">const</span> <span class="keyword">int</span> &amp;max)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!tick_count) <span class="keyword">return</span> max;</span><br><span class="line">    <span class="keyword">int</span> _tick_count = tick_count - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> distence    = max / _tick_count;</span><br><span class="line">    <span class="keyword">return</span> max % _tick_count ? distence * _tick_count + _tick_count</span><br><span class="line">                             : distence * _tick_count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>QLineSeries可以设置图标中的每个点的标签(比如显示纵坐标):</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">QLineSeries *series = <span class="keyword">new</span> QLineSeries(chart);</span><br><span class="line">series-&gt;setPointLabelsColor(QColor(<span class="number">251</span>, <span class="number">192</span>, <span class="number">45</span>));</span><br><span class="line">series-&gt;setPointLabelsVisible(<span class="literal">true</span>);</span><br><span class="line">series-&gt;setPointLabelsFormat(<span class="string">"@yPoint"</span>);</span><br><span class="line">series-&gt;setPointsVisible(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
 
       
     </div>
@@ -382,7 +407,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/git/" rel="tag"># git</a>
+            <a href="/tags/Qt/" rel="tag"># Qt</a>
           
         </div>
       
@@ -395,14 +420,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/01/24/test/" rel="next" title="git的基本使用">
+                <i class="fa fa-chevron-left"></i> git的基本使用
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/04/01/QChart和QLineSeries使用注意/" rel="prev" title="QChart和QLineSeries使用注意">
-                QChart和QLineSeries使用注意 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/04/10/hello-world/" rel="prev" title="chonlon">
+                chonlon <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
