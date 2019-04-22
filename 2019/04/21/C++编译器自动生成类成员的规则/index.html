@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="在实际开发中使用了template, 确实感觉到了template的强大. 在使用unique_ptr作为成员函数的时候发现所在类将不会自动生成复制构造函数, 忽然想到总结学习一下C++编译器自动生成类成员的规则.">
+<meta name="description" content="在使用unique_ptr作为成员函数的时候发现所在类将不会自动生成复制构造函数, 忽然想到总结学习一下C++编译器自动生成类成员的规则.">
 <meta name="keywords" content="C++">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C++编译器自动生成类成员的规则">
 <meta property="og:url" content="http://chon.wang/2019/04/21/C++编译器自动生成类成员的规则/index.html">
 <meta property="og:site_name" content="LLLon">
-<meta property="og:description" content="在实际开发中使用了template, 确实感觉到了template的强大. 在使用unique_ptr作为成员函数的时候发现所在类将不会自动生成复制构造函数, 忽然想到总结学习一下C++编译器自动生成类成员的规则.">
+<meta property="og:description" content="在使用unique_ptr作为成员函数的时候发现所在类将不会自动生成复制构造函数, 忽然想到总结学习一下C++编译器自动生成类成员的规则.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-21T15:55:05.169Z">
+<meta property="og:updated_time" content="2019-04-22T13:46:18.253Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C++编译器自动生成类成员的规则">
-<meta name="twitter:description" content="在实际开发中使用了template, 确实感觉到了template的强大. 在使用unique_ptr作为成员函数的时候发现所在类将不会自动生成复制构造函数, 忽然想到总结学习一下C++编译器自动生成类成员的规则.">
+<meta name="twitter:description" content="在使用unique_ptr作为成员函数的时候发现所在类将不会自动生成复制构造函数, 忽然想到总结学习一下C++编译器自动生成类成员的规则.">
 
 
 
@@ -363,8 +363,7 @@
       
 
       
-        <p>在实际开发中使用了template, 确实感觉到了template的强大.</p>
-<p>在使用unique_ptr作为成员函数的时候发现所在类将不会自动生成复制构造函数, 忽然想到总结学习一下C++编译器自动生成类成员的规则.</p>
+        <p>在使用unique_ptr作为成员函数的时候发现所在类将不会自动生成复制构造函数, 忽然想到总结学习一下C++编译器自动生成类成员的规则.</p>
 <a id="more"></a>
 <ul>
 <li>拷贝构造函数: 采用单个参数const T&amp;, 如果所有基类以及成员(包括引用成员)都是<em>可拷贝构造</em>的, 而且没有自定义的拷贝构造函数则生成这个函数.</li>
