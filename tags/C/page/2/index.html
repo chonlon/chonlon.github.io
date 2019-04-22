@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="C++,标准库,">
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
@@ -79,18 +79,13 @@
 
 
 
-<meta name="description" content="Duration的默认单位是秒, 但是他的个数可以不是整数, 而是–ratio分数">
-<meta name="keywords" content="C++,标准库">
-<meta property="og:type" content="article">
-<meta property="og:title" content="C++ 标准库duration--时间片">
-<meta property="og:url" content="http://chon.wang/2018/08/20/3.1.duration--时间片/index.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LLLon">
+<meta property="og:url" content="http://chon.wang/tags/C/page/2/index.html">
 <meta property="og:site_name" content="LLLon">
-<meta property="og:description" content="Duration的默认单位是秒, 但是他的个数可以不是整数, 而是–ratio分数">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-13T15:41:54.062Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C++ 标准库duration--时间片">
-<meta name="twitter:description" content="Duration的默认单位是秒, 但是他的个数可以不是整数, 而是–ratio分数">
+<meta name="twitter:title" content="LLLon">
 
 
 
@@ -120,13 +115,13 @@
 
 
 
-  <link rel="canonical" href="http://chon.wang/2018/08/20/3.1.duration--时间片/">
+  <link rel="canonical" href="http://chon.wang/tags/C/page/2/">
 
 
 
 
 
-  <title>C++ 标准库duration--时间片 | LLLon</title>
+  <title>标签: C++ | LLLon</title>
   
 
 
@@ -145,7 +140,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -249,202 +244,56 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
+  
+  
+  
+  <div class="post-block tag">
 
-  
+    <div id="posts" class="posts-collapse">
+      <div class="collection-title">
+        <h1>C++<small>标签</small>
+        </h1>
+      </div>
 
-  
-  
-  
+      
+        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chon.wang/2018/08/20/3.1.duration--时间片/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Lon">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="LLLon">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
+            <a class="post-title-link" href="/2016/11/04/运算符重载/" itemprop="url">
+              
+                <span itemprop="name">运算符重载</span>
+              
+            </a>
         
-          <h1 class="post-title" itemprop="name headline">C++ 标准库duration--时间片</h1>
-        
+      </h2>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-20T00:00:00+08:00">
-                2018-08-20
-              </time>
-            
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated" datetime="2016-11-04T00:00:00+08:00" content="2016-11-04">
+          11-04
+        </time>
+      </div>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/" itemprop="url" rel="index">
-                    <span itemprop="name">学习</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/C/" itemprop="url" rel="index">
-                    <span itemprop="name">C++</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/C/标准库/" itemprop="url" rel="index">
-                    <span itemprop="name">标准库</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <p>Duration的默认单位是秒, 但是他的个数可以不是整数, 而是–ratio分数<br><a id="more"></a><br>Duration的默认单位是秒, 但是他的个数可以不是整数, 而是–ratio分数</p>
-<p>比如:</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::chrono::duration&lt;<span class="keyword">int</span>&gt; twentySecends(<span class="number">20</span>);<span class="comment">//默认单位: 1s</span></span><br><span class="line"><span class="built_in">std</span>::chrono::duration&lt;<span class="keyword">double</span>, <span class="built_in">std</span>::ratio&lt;<span class="number">60</span>&gt;&gt; halfAMinute(<span class="number">0.5</span>);<span class="comment">//单位60s</span></span><br><span class="line"><span class="built_in">std</span>::chrono::duration&lt;<span class="keyword">long</span>, <span class="built_in">std</span>::ratio&lt;<span class="number">1</span>, <span class="number">1000</span>&gt;&gt; oneMillisend(<span class="number">1</span>);<span class="comment">//单位1ms</span></span><br></pre></td></tr></table></figure>
-<p>另外chrono中也提供了一些预定义:比如millisends, hours等:</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">	<span class="comment">// duration TYPES</span></span><br><span class="line"><span class="keyword">using</span> nanoseconds = duration&lt;<span class="keyword">long</span> <span class="keyword">long</span>, nano&gt;;</span><br><span class="line"><span class="keyword">using</span> microseconds = duration&lt;<span class="keyword">long</span> <span class="keyword">long</span>, micro&gt;;</span><br><span class="line"><span class="keyword">using</span> milliseconds = duration&lt;<span class="keyword">long</span> <span class="keyword">long</span>, milli&gt;;</span><br><span class="line"><span class="keyword">using</span> seconds = duration&lt;<span class="keyword">long</span> <span class="keyword">long</span>&gt;;</span><br><span class="line"><span class="keyword">using</span> minutes = duration&lt;<span class="keyword">int</span>, ratio&lt;<span class="number">60</span>&gt;&gt;;</span><br><span class="line"><span class="keyword">using</span> hours = duration&lt;<span class="keyword">int</span>, ratio&lt;<span class="number">3600</span>&gt;&gt;;</span><br><span class="line"><span class="comment">//nano milli是ratio中的一些定义.</span></span><br></pre></td></tr></table></figure>
-<p><code>c++标准库第144页</code></p>
-
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/C/" rel="tag"># C++</a>
-          
-            <a href="/tags/标准库/" rel="tag"># 标准库</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/08/11/2.ratio--编译时期分数/" rel="next" title="ratio--编译时期分数">
-                <i class="fa fa-chevron-left"></i> ratio--编译时期分数
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/08/21/1.关于type traits 的一部分知识/" rel="prev" title="C++ type traits">
-                C++ type traits <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+    </header>
   </article>
 
 
-
-    <div class="post-spread">
       
     </div>
+
   </div>
+  
+  
+  
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/tags/C/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/tags/C/">1</a><span class="page-number current">2</span>
+  </nav>
+
 
 
           </div>
@@ -452,10 +301,6 @@
 
 
           
-
-  
-
-
 
         </div>
         
@@ -700,10 +545,6 @@
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
 
   
 

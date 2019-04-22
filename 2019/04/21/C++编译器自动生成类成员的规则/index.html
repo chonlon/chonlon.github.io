@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="C++,标准库,">
+  <meta name="keywords" content="C++,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Duration的默认单位是秒, 但是他的个数可以不是整数, 而是–ratio分数">
-<meta name="keywords" content="C++,标准库">
+<meta name="description" content="在实际开发中使用了template, 确实感觉到了template的强大. 在使用unique_ptr作为成员函数的时候发现所在类将不会自动生成复制构造函数, 忽然想到总结学习一下C++编译器自动生成类成员的规则.">
+<meta name="keywords" content="C++">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C++ 标准库duration--时间片">
-<meta property="og:url" content="http://chon.wang/2018/08/20/3.1.duration--时间片/index.html">
+<meta property="og:title" content="C++编译器自动生成类成员的规则">
+<meta property="og:url" content="http://chon.wang/2019/04/21/C++编译器自动生成类成员的规则/index.html">
 <meta property="og:site_name" content="LLLon">
-<meta property="og:description" content="Duration的默认单位是秒, 但是他的个数可以不是整数, 而是–ratio分数">
+<meta property="og:description" content="在实际开发中使用了template, 确实感觉到了template的强大. 在使用unique_ptr作为成员函数的时候发现所在类将不会自动生成复制构造函数, 忽然想到总结学习一下C++编译器自动生成类成员的规则.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-13T15:41:54.062Z">
+<meta property="og:updated_time" content="2019-04-21T15:55:05.169Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C++ 标准库duration--时间片">
-<meta name="twitter:description" content="Duration的默认单位是秒, 但是他的个数可以不是整数, 而是–ratio分数">
+<meta name="twitter:title" content="C++编译器自动生成类成员的规则">
+<meta name="twitter:description" content="在实际开发中使用了template, 确实感觉到了template的强大. 在使用unique_ptr作为成员函数的时候发现所在类将不会自动生成复制构造函数, 忽然想到总结学习一下C++编译器自动生成类成员的规则.">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://chon.wang/2018/08/20/3.1.duration--时间片/">
+  <link rel="canonical" href="http://chon.wang/2019/04/21/C++编译器自动生成类成员的规则/">
 
 
 
 
 
-  <title>C++ 标准库duration--时间片 | LLLon</title>
+  <title>C++编译器自动生成类成员的规则 | LLLon</title>
   
 
 
@@ -263,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chon.wang/2018/08/20/3.1.duration--时间片/">
+    <link itemprop="mainEntityOfPage" href="http://chon.wang/2019/04/21/C++编译器自动生成类成员的规则/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Lon">
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">C++ 标准库duration--时间片</h1>
+          <h1 class="post-title" itemprop="name headline">C++编译器自动生成类成员的规则</h1>
         
 
         <div class="post-meta">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-20T00:00:00+08:00">
-                2018-08-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-21T00:00:00+08:00">
+                2019-04-21
               </time>
             
 
@@ -333,17 +333,6 @@
 
                 
                 
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习/C/标准库/" itemprop="url" rel="index">
-                    <span itemprop="name">标准库</span>
-                  </a>
-                </span>
-
-                
-                
               
             </span>
           
@@ -374,12 +363,46 @@
       
 
       
-        <p>Duration的默认单位是秒, 但是他的个数可以不是整数, 而是–ratio分数<br><a id="more"></a><br>Duration的默认单位是秒, 但是他的个数可以不是整数, 而是–ratio分数</p>
-<p>比如:</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::chrono::duration&lt;<span class="keyword">int</span>&gt; twentySecends(<span class="number">20</span>);<span class="comment">//默认单位: 1s</span></span><br><span class="line"><span class="built_in">std</span>::chrono::duration&lt;<span class="keyword">double</span>, <span class="built_in">std</span>::ratio&lt;<span class="number">60</span>&gt;&gt; halfAMinute(<span class="number">0.5</span>);<span class="comment">//单位60s</span></span><br><span class="line"><span class="built_in">std</span>::chrono::duration&lt;<span class="keyword">long</span>, <span class="built_in">std</span>::ratio&lt;<span class="number">1</span>, <span class="number">1000</span>&gt;&gt; oneMillisend(<span class="number">1</span>);<span class="comment">//单位1ms</span></span><br></pre></td></tr></table></figure>
-<p>另外chrono中也提供了一些预定义:比如millisends, hours等:</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">	<span class="comment">// duration TYPES</span></span><br><span class="line"><span class="keyword">using</span> nanoseconds = duration&lt;<span class="keyword">long</span> <span class="keyword">long</span>, nano&gt;;</span><br><span class="line"><span class="keyword">using</span> microseconds = duration&lt;<span class="keyword">long</span> <span class="keyword">long</span>, micro&gt;;</span><br><span class="line"><span class="keyword">using</span> milliseconds = duration&lt;<span class="keyword">long</span> <span class="keyword">long</span>, milli&gt;;</span><br><span class="line"><span class="keyword">using</span> seconds = duration&lt;<span class="keyword">long</span> <span class="keyword">long</span>&gt;;</span><br><span class="line"><span class="keyword">using</span> minutes = duration&lt;<span class="keyword">int</span>, ratio&lt;<span class="number">60</span>&gt;&gt;;</span><br><span class="line"><span class="keyword">using</span> hours = duration&lt;<span class="keyword">int</span>, ratio&lt;<span class="number">3600</span>&gt;&gt;;</span><br><span class="line"><span class="comment">//nano milli是ratio中的一些定义.</span></span><br></pre></td></tr></table></figure>
-<p><code>c++标准库第144页</code></p>
+        <p>在实际开发中使用了template, 确实感觉到了template的强大.</p>
+<p>在使用unique_ptr作为成员函数的时候发现所在类将不会自动生成复制构造函数, 忽然想到总结学习一下C++编译器自动生成类成员的规则.</p>
+<a id="more"></a>
+<ul>
+<li>拷贝构造函数: 采用单个参数const T&amp;, 如果所有基类以及成员(包括引用成员)都是<em>可拷贝构造</em>的, 而且没有自定义的拷贝构造函数则生成这个函数.</li>
+<li>无参默认构造函数: 如果此类没有定义任何构造函数并且所有并且所有成员或者基类都可以调用无参构造函数就会自动生成默认构造函数. 这意味着即使类里面只声明了复制构造函数(即使你只是想禁止复制)也不会生成默认构造函数.</li>
+<li>拷贝赋值函数: 如果所有基类以及成员都是可拷贝赋值的, 不过引用成员不用考虑拷贝问题.</li>
+<li>移动构造函数: 除非此类定义了拷贝构造函数, 拷贝赋值函数, 移动赋值函数或者析构函数中的一种, 不然编译器就会为类提供移动构造函数.如果基类或者成员不可移动构造, 那么这个生成的移动构造函数就会被定义为deleted.</li>
+</ul>
+<p>原博客链接: <a href="http://www.enyo.de/fw/notes/cpp-auto-members.html" target="_blank" rel="noopener">http://www.enyo.de/fw/notes/cpp-auto-members.html</a></p>
+<p>原文:</p>
+<h1 id="C-rules-for-automatic-member-function-generation"><a href="#C-rules-for-automatic-member-function-generation" class="headerlink" title="C++ rules for automatic member function generation"></a>C++ rules for automatic member function generation</h1><p>Florian Weimer</p>
+<p><strong>I cannot remember the rules according to which C++ automatically generates some class members, so this note serves as a reminder.</strong></p>
+<p>The rules for automatically generating class members for a class <code>T</code> are:</p>
+<ul>
+<li>A <em>copy constructor</em> (which takes a single argument of type <code>const T &amp;</code>) is generated if all base classes and members are copy-constructible. Note that reference members are copy-constructible.</li>
+<li>The parameter-less <em>default constructor</em> is generated if the class does not define any constructor and all base classes and members are default-constructible. This means that once you declare a copy constructor (perhaps to disable the automatically provided one, see below), the compiler will not supply a default construtor.</li>
+<li>The <em>copy-assignment operator</em> <code>T &amp;T::operator=(const T &amp;)</code> is generated if all base classes and members are copy-assignable. For this purpose, reference members are not considered copy-assignable.</li>
+<li>The <em>destructor</em> is always automatically supplied if possible, based on the members and the base classes.</li>
+<li>In C++11, A <em>move constructor</em> with an argument <code>T &amp;&amp;</code> is supplied unless the class has any of the following: a user-defined copy constructor, copy-assignment operator, move-assignment operator, or destructor. If the move constructor cannot be implemented because not all bases or members are move-constructible, the supplied move constructor will be defined as deleted.</li>
+<li>Similarly, in C++11, a <em>move-assignment operator</em> <code>T &amp;T::operator=(T &amp;&amp;)</code> is supplied under the same conditions.</li>
+</ul>
+<p>Comparison operator such as <code>bool operator==(const T &amp;) const</code> are never automatically generated by the compiler, even if all base classes and members are comparable.</p>
+<p>In order to suppress the automatically generated copy constructor and copy-assignment operator, it is customary in C++03 and earlier to declare them as <code>private</code>members, but do not define them:</p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; class T &#123;</span><br><span class="line">&gt;   T(const T &amp;); // not implemented</span><br><span class="line">&gt;   T &amp;operator=(const T &amp;); // not implemented</span><br><span class="line">&gt; public:</span><br><span class="line">&gt;   ...</span><br><span class="line">&gt; &#125;;</span><br><span class="line">&gt;     </span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>This will result in a compile-time error if code which has not private access tries to use this members, or a link-time error for code that has access. In C++11 and later, the <code>delete</code> should be used because it results in a better diagnostic:</p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; class T &#123;</span><br><span class="line">&gt;   T(const T &amp;) = delete;</span><br><span class="line">&gt;   T &amp;operator=(const T &amp;) = delete;</span><br><span class="line">&gt; public:</span><br><span class="line">&gt;   ...</span><br><span class="line">&gt; &#125;;</span><br><span class="line">&gt;     </span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>C++11 supports initialization of members as part of the class declaration, like this:</p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; class T &#123;</span><br><span class="line">&gt;   int a = 1;</span><br><span class="line">&gt; public:</span><br><span class="line">&gt;   explicit T(int);</span><br><span class="line">&gt; &#125;</span><br><span class="line">&gt;     </span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>Here, the user-defined constructor prevents generation of the default constructor with the initialization operations. Generation of the default constructor can be requested using the <code>default</code> keyword.</p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; class T &#123;</span><br><span class="line">&gt;   int a = 1;</span><br><span class="line">&gt; public:</span><br><span class="line">&gt;   explicit T(int);</span><br><span class="line">&gt;   T() = default;</span><br><span class="line">&gt; &#125;</span><br><span class="line">&gt;     </span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>The rules are fairly simple (as far as things related to C++ are considered), and after writing them down, I will probably never have to look at this note again.</p>
 
       
     </div>
@@ -399,8 +422,6 @@
           
             <a href="/tags/C/" rel="tag"># C++</a>
           
-            <a href="/tags/标准库/" rel="tag"># 标准库</a>
-          
         </div>
       
 
@@ -412,8 +433,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/11/2.ratio--编译时期分数/" rel="next" title="ratio--编译时期分数">
-                <i class="fa fa-chevron-left"></i> ratio--编译时期分数
+              <a href="/2019/04/01/QChart和QLineSeries使用注意/" rel="next" title="QChart和QLineSeries使用注意">
+                <i class="fa fa-chevron-left"></i> QChart和QLineSeries使用注意
               </a>
             
           </div>
@@ -421,10 +442,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/08/21/1.关于type traits 的一部分知识/" rel="prev" title="C++ type traits">
-                C++ type traits <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -476,8 +493,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -553,6 +579,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#C-rules-for-automatic-member-function-generation"><span class="nav-number">1.</span> <span class="nav-text">C++ rules for automatic member function generation</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
